@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/12 20:53:38 by jpinyot           #+#    #+#             */
-/*   Updated: 2017/12/14 00:27:13 by jpinyot          ###   ########.fr       */
+/*   Updated: 2017/12/14 01:09:31 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*ft_print_until(char *c)
 	return (NULL);
 }
 
-int		ft_printf(const char *format, ...)
+int		ft_printf(const char *restrict format, ...)
 {
 	char	*tmp;
 	int		pos;
@@ -38,12 +38,12 @@ int		ft_printf(const char *format, ...)
 
 	tmp = (char *)format;
 	pos = 1;
+	va_start(ap, format);
 	while (((tmp = ft_print_until(tmp)) != NULL))
 	{
-		va_start(ap, pos);
 		*res = va_arg(ap, int) + 48;
 		write(1, res, 1);
-		tmp++;
+		tmp++;									//TEMPORAL!!!!
 //		ft_print_var(tmp, ad);
 	}
 	return (0);
@@ -52,7 +52,8 @@ int		ft_printf(const char *format, ...)
 int     main(void)
 {
 	int res = 9;
+	int res2 = 454;
 
-	ft_printf("El resultado es: %i\n", res);
+	ft_printf("El resultado es: %i\n o es: %f", res, res2);
 	return (0);
 }

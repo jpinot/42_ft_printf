@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_val.c                                     :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/13 23:43:14 by jpinyot           #+#    #+#             */
-/*   Updated: 2017/12/14 00:27:37 by jpinyot          ###   ########.fr       */
+/*   Created: 2017/11/11 22:22:27 by jpinyot           #+#    #+#             */
+/*   Updated: 2017/11/16 00:13:54 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdarg.h>
-#include <stdio.h>
+#include "libft.h"
 
-//int		ft_check_type(const char *c)
-//{
-	
-
-int		*ft_print_var(const char *c, int pos, ...)
+char	*ft_strrchr(const char *str, int c)
 {
-	va_list	ad;
-	int i;
+	char *s;
 
-	va_start(ad, pos);
-	i = va_arg(ad, int);
-	printf("%i", i);
-	return (0);
+	s = (char *)&str[ft_strlen(str) + 1];
+	while (s-- != str)
+	{
+		if (*s == c)
+			return (s);
+	}
+	return (NULL);
 }

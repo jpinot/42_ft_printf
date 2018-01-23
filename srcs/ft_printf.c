@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/12 20:53:38 by jpinyot           #+#    #+#             */
-/*   Updated: 2017/12/14 23:27:42 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/01/23 09:08:39 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,45 @@
 
 static char	*ft_print_until(char *c)
 {
-	int i;
 
-	i = 0;
-	while (c[i])
+	while (*c)
 	{
-		if (c[i] == '%')
-			return (c + i + 1);
-		write(1, &c[i], 1);
-		i++;
+		if (*c == '%')
+			return (c + 1);
+		write(1, c, 1);
+		c++;
 	}
 	return (NULL);
+}
+
+char       *ft_printf_flags(va_list ap, char *s)
+{
+	t_arg   arg;
+
+//	write(1, "|", 1);
+//	write(1, s, 1);
+//	write(1, "|", 1);
+	arg = ft_printf_new_arg(&arg);
+	s = ft_check_flags(s, &arg);
+	s = ft_check_field_with(ap, s, &arg);
+	s = ft_check_precision(ap, s, &arg);
+	s = ft_check_length(s, &arg);
+//	write(1, "|", 1);
+//	write(1, s, 1);
+//	write(1, "|", 1);
+	int z = 0;
+	if (*s == 'i' || *s =='d')
+		z = conv_int(ap, &arg);
+	if (*s == 'u' || *s == 'x' || *s == 'X' || *s == 'o')
+		z = conv_unsigned_int(ap, &arg, *s);
+	if (*s == 'c')
+		z = conv_char(ap, &arg);
+	if (*s == 's')
+		z = conv_str(ap, &arg);
+	if (*s == '%')
+		write(1, "%", 1);
+	s++;
+	return (s);
 }
 
 int			ft_printf(const char *restrict format, ...)
@@ -36,18 +64,6 @@ int			ft_printf(const char *restrict format, ...)
 	tmp = (char *)format;
 	va_start(ap, format);
 	while (((tmp = ft_print_until(tmp)) != NULL))
-	{
-		ft_print_var(ap, tmp);
-		tmp++;
-	}
-	return (0);
-}
-
-int     main(void)
-{
-	int res = 9;
-	int res2 = 454;
-
-	ft_printf("El resultado es: %d\n o es: %d", res, res2);
+		tmp  = ft_printf_flags(ap, tmp);
 	return (0);
 }

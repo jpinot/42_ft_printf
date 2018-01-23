@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 22:54:06 by jpinyot           #+#    #+#             */
-/*   Updated: 2017/12/14 23:27:47 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/01/23 09:15:07 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,43 @@
 # include <unistd.h>
 # include <stdarg.h>
 # include "libft.h"
+# include "stddef.h"
 
-#define conversions (sSpdDioOuUxXcCeE, fF, gG, aA, n)
+//#define CONVERSIONS sSpdDioOuUxXcCeEfFgGaAn
+//static const char conv[] = {CONVERSIONS};
 
-int         ft_printf(const char *restrict format, ...);
-void        ft_print_var(va_list ap, char *c);
+typedef struct		s_arg
+{
+	int				arg;
+	int				left_justify;
+	int				force_positive;
+	int				prefix;
+	int				pad_zero;
+	int				thousands_group;
+	int				filed_width;
+	int				precision;
+	int				lenght;
+}					t_arg;
+
+int			ft_printf(const char *restrict format, ...);
+t_arg		ft_printf_new_arg(t_arg *arg);
+int			ft_printf_putint(intmax_t num, t_arg *arg);
+int         ft_printf_putuint(uintmax_t num, t_arg *arg, int conv);
+int			ft_printf_putuint_hex(uintmax_t num, t_arg *tmp, int conv);
+int			ft_printf_putchar(char c, t_arg *arg);
+int         ft_printf_putstr(char *s, t_arg *arg);
+char        *ft_printf_itoa(intmax_t n);
+char        *ft_printf_itoa_hex(uintmax_t num, int conv);
+char        *ft_printf_itoa_oct(uintmax_t num);
+void		ft_write(char c, int i);
+
+char	*ft_check_flags(char *s, t_arg *arg);
+char	*ft_check_field_with(va_list ap, char *s, t_arg *arg);
+char	*ft_check_precision(va_list ap, char *s, t_arg *arg);
+char	*ft_check_length(char *s, t_arg *arg);
+
+int		conv_int(va_list ap, t_arg *arg);
+int		conv_unsigned_int(va_list ap, t_arg *arg, int conv);
+int     conv_char(va_list ap, t_arg *arg);
+int     conv_str(va_list ap, t_arg *arg);
 #endif

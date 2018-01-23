@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_val.c                                     :+:      :+:    :+:   */
+/*   ft_printf_putchar.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/13 23:43:14 by jpinyot           #+#    #+#             */
-/*   Updated: 2017/12/14 23:27:45 by jpinyot          ###   ########.fr       */
+/*   Created: 2018/01/22 14:11:55 by jpinyot           #+#    #+#             */
+/*   Updated: 2018/01/22 15:56:41 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libprintf.h"
-#include <stdio.h>
 
-static char	ft_check_type(char *c)
+int			ft_printf_putchar(char c, t_arg *arg)
 {
-	while(c == conversions)
-
-static int	ft_check_type(va_list ap, char *c)
-{
-	if (ft_check_input(c) == 'd')
-		ft_putnbr(va_arg(ap, int));
+		arg->filed_width -= 1;
+	if (arg->left_justify == 0)
+	{
+		if (arg->filed_width > 0)
+			ft_write(' ', arg->filed_width);
+		write(1, &c, 1);
+	}
+	else
+	{
+		write(1, &c, 1);
+		if (arg->filed_width > 0)
+			ft_write(' ', arg->filed_width);
+	}
 	return (0);
-}
-
-void		ft_print_var(va_list ap, char *c)
-{
-	ft_check_type(ap, c);
 }

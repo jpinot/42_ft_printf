@@ -6,35 +6,34 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 11:52:39 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/22 18:43:58 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/01/28 18:38:07 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libprintf.h"
 
-static void	ft_int_check_length(intmax_t num, t_arg *arg)
+static intmax_t	ft_int_check_length(intmax_t num, t_arg *arg, int conv)
 {
 	if (arg->lenght == 104104)
 		num = (char)num;
-	if (arg->lenght == 108108)
+	else if (arg->lenght == 108108)
 		num = (long long)num;
-	if (arg->lenght == 104)
+	else if (arg->lenght == 104)
 		num = (short)num;
-	if (arg->lenght == 108)
+	else if (arg->lenght == 108)
 		num = (long)num;
-//	if (arg->lenght == 106)
-//		num = (intmax_t)num;
-	if (arg->lenght == 122)
+	else if (arg->lenght == 122)
 		num = (size_t)num;
-	if (arg->lenght == 116)
+	else if (arg->lenght == 116)
 		num = (ptrdiff_t)num;
-//	if (arg->lenght == 76)
-//		num = (long double)num;
-	else
+	else if (arg->lenght == 106)
+		num = (intmax_t)num;
+	else if (arg->lenght == 0 && conv != 68)
 		num = (int)num;
+	return (num);
 }
 
-int			conv_int(va_list ap, t_arg *arg)
+int			conv_int(va_list ap, t_arg *arg, int conv)
 {
 	intmax_t	num;
 	t_arg		tmp;
@@ -42,17 +41,14 @@ int			conv_int(va_list ap, t_arg *arg)
 	if (arg->precision)
 		arg->pad_zero = 0;
 	num = va_arg(ap, intmax_t);
-	if (arg->force_positive == 1 || num < 0)
+	num = ft_int_check_length(num, arg, conv);
+	if (arg->force_positive && num >= 0)
+		arg->force_positive = 43;
+	if (num < 0)
 	{
-		if (arg->force_positive && num >= 0)
-			arg->force_positive = 43;
-		if (num < 0)
-		{
-			arg->force_positive = 45;
-			num = -(num);
-		}
+		arg->force_positive = 45;
+		num = -(num);
 	}
 	tmp = *arg;
-	ft_int_check_length(num, arg);
 	return(ft_printf_putint(num, &tmp));
 }

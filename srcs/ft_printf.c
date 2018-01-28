@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/12 20:53:38 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/23 09:08:39 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/01/28 18:58:28 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,30 @@ char       *ft_printf_flags(va_list ap, char *s)
 {
 	t_arg   arg;
 
-//	write(1, "|", 1);
-//	write(1, s, 1);
-//	write(1, "|", 1);
 	arg = ft_printf_new_arg(&arg);
 	s = ft_check_flags(s, &arg);
 	s = ft_check_field_with(ap, s, &arg);
 	s = ft_check_precision(ap, s, &arg);
 	s = ft_check_length(s, &arg);
-//	write(1, "|", 1);
-//	write(1, s, 1);
-//	write(1, "|", 1);
 	int z = 0;
-	if (*s == 'i' || *s =='d')
-		z = conv_int(ap, &arg);
-	if (*s == 'u' || *s == 'x' || *s == 'X' || *s == 'o')
+	if (*s == 'i' || *s =='d' || *s == 'D')
+		z = conv_int(ap, &arg, *s);
+	if (*s == 'u' || *s == 'U' || *s == 'x' || *s == 'X' || *s == 'o' || *s == 'O')
 		z = conv_unsigned_int(ap, &arg, *s);
+	if (*s == 'p')
+		z = conv_void(ap, &arg, *s);
 	if (*s == 'c')
 		z = conv_char(ap, &arg);
+	if (*s == 'C')
+		z = conv_utf_8(ap, &arg);
 	if (*s == 's')
 		z = conv_str(ap, &arg);
+	if (*s == 'S')
+		z = conv_str_utf_8(ap, &arg);
 	if (*s == '%')
 		write(1, "%", 1);
+//	if (*s == 'p')
+//		z = conv_void(ap, &arg);
 	s++;
 	return (s);
 }

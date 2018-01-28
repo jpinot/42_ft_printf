@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 15:59:43 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/23 09:01:38 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/01/28 18:40:12 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ char		*ft_printf_itoa_hex(uintmax_t num, int conv)
 	i = 16;
 	s = (char *)malloc(sizeof(uintmax_t) * 2 + 1);
 	ft_strcpy(s, "0");
+	if (num == 0)
+		return(s);
 	if (conv == 'X')
 	{
 		while (i > 0)

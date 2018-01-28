@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 09:33:11 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/23 09:38:12 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/01/28 16:42:52 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,30 @@ char *decToHex(uintmax_t input)
 	return output;
 }
 
+char	from_c_to_u(int c)
+{
+	char a;
+	int i = 0;
+
+	while (i < 4)
+	{
+		a = (c & 0x100);
+		i++;
+		c >>= 8;
+	}
+	return(a);
+}
+
 int		main(void)
 {
-	float	i = 32.34;
-	long	a = (int)i;
-	char 	c = 'h';
-	uintmax_t		x = 12345678912345;
-	x = (long)x;
-//	x = (int)x;
-
-	printf("|%s|\n", decToHex(12344));
-	printf("|%o|\n", 12344);
-//	ft_test(a);
+//	intmax_t x = 2147483947;
+//	x = (short)x;
+//	short w = 2147483947;
+//	printf("%ji\n", x);
+	int x = -10;
+	long w = 4294967296;
+	printf("%D\n", x);
+	x += 4294967296;
+	printf("%i", x);
 	return(0);
 }

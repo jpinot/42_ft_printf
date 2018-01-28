@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:31:29 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/23 09:02:55 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/01/28 18:38:26 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int			ft_printf_putint(intmax_t num, t_arg *arg)
 
 	n = ft_printf_itoa(num);
 	len = ft_strlen(n);
-
 	arg->precision -= len;
 	if (arg->precision > 0)
 		arg->filed_width -= (arg->precision + len);

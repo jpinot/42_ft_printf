@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 14:29:06 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/22 14:46:05 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/01/25 13:44:32 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int		conv_str(va_list ap, t_arg *arg)
 {
 	char	*s;
+
 
 	s = va_arg(ap, char *);
 	return(ft_printf_putstr(s, arg));

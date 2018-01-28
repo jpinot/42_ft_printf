@@ -6,11 +6,20 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:32:14 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/23 11:12:25 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/01/28 18:48:48 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libprintf.h"
+
+static void ft_write_prefix(t_arg *arg)
+{
+	write(1, "0", 1);
+	if (arg->prefix == 'x' || arg->prefix == 'X')
+		write(1, &arg->prefix, 1);
+	if (arg->prefix == 'p')
+		write(1, "x7fff", 5);
+}
 
 static int	ft_uint_write_nonjust(char *n, t_arg *arg)
 {
@@ -21,9 +30,7 @@ static int	ft_uint_write_nonjust(char *n, t_arg *arg)
 	else if (arg->filed_width > 0 && arg->pad_zero == 0)
 		ft_write(' ', arg->filed_width);
 	if (arg->prefix > 0)
-	write(1, "0", 1);
-	if (arg->prefix == 'x' || arg->prefix == 'X')
-		write(1, &arg->prefix, 1);
+		ft_write_prefix(arg);
 	if (arg->force_positive)
 		write(1, &arg->force_positive, 1);
 	if (arg->precision > 0)
@@ -37,9 +44,7 @@ static int	ft_uint_write_just(char *n, t_arg *arg)
 	if (arg->prefix == 'x' || arg->prefix == 'X')
 		arg->filed_width -= 2;
 	if (arg->prefix > 0)
-		write(1, "0", 1);
-	if (arg->prefix == 'x' || arg->prefix == 'X')
-		write(1, &arg->prefix, 1);
+		ft_write_prefix(arg);
 	if (arg->force_positive)
 		write(1, &arg->force_positive, 1);
 	if (arg->precision)
@@ -55,9 +60,9 @@ int			ft_printf_putuint(uintmax_t num, t_arg *arg, int conv)
 	char	*n;
 	int		len;
 
-	if (conv == 'x' || conv == 'X')
+	if (conv == 'x' || conv == 'X' || conv == 'p')
 		n = ft_printf_itoa_hex(num, conv);
-	else if (conv == 'o')
+	else if (conv == 'o' || conv == 'O')
 		n = ft_printf_itoa_oct(num);
 	else
 		n = ft_printf_itoa(num);

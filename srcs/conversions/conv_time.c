@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   conv_char.c                                        :+:      :+:    :+:   */
+/*   conv_time.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/22 14:01:06 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/29 19:36:04 by jpinyot          ###   ########.fr       */
+/*   Created: 2018/01/29 19:10:04 by jpinyot           #+#    #+#             */
+/*   Updated: 2018/01/29 19:59:02 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libprintf.h"
+#include <time.h>
+#include <stdio.h>
 
-int		conv_char(va_list ap, t_arg *arg)
+int		conv_time(va_list ap, t_arg *arg)
 {
-	char	c;
+	time_t rawtime;
+	struct tm * timeinfo;
 
-	c = va_arg(ap, int);
-	return(ft_printf_putchar(c, arg));
+	time ( &rawtime );
+	timeinfo = localtime ( &rawtime );
+	return (ft_printf_putstr(asctime(timeinfo), arg));
 }

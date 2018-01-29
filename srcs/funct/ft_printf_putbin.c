@@ -1,21 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   conv_char.c                                        :+:      :+:    :+:   */
+/*   ft_printf_putbin.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/22 14:01:06 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/29 19:36:04 by jpinyot          ###   ########.fr       */
+/*   Created: 2018/01/29 18:12:17 by jpinyot           #+#    #+#             */
+/*   Updated: 2018/01/29 18:17:22 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libprintf.h"
-
-int		conv_char(va_list ap, t_arg *arg)
+int		ft_printf_putbin(uintmax_t num, t_arg *arg)
 {
-	char	c;
 
-	c = va_arg(ap, int);
-	return(ft_printf_putchar(c, arg));
-}

@@ -1,21 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   conv_char.c                                        :+:      :+:    :+:   */
+/*   ft_printf_itoa_bin.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/22 14:01:06 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/29 19:36:04 by jpinyot          ###   ########.fr       */
+/*   Created: 2018/01/29 18:20:00 by jpinyot           #+#    #+#             */
+/*   Updated: 2018/01/29 19:07:14 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libprintf.h"
 
-int		conv_char(va_list ap, t_arg *arg)
+static char *ft_delate_zero(char *s)
 {
-	char	c;
+	while(*s == '0')
+		s++;
+	return (s);
+}
 
-	c = va_arg(ap, int);
-	return(ft_printf_putchar(c, arg));
+char	*ft_printf_itoa_bin(uintmax_t num)
+{
+	char *s;
+	int i;
+
+	i = 64;
+	s = (char *)malloc(sizeof(uintmax_t) * 8 + 1);
+	ft_strcpy(s, "0");
+	while (i > 0)
+	{
+		s[i--] = ((num & 0x1) + '0');
+		num >>= 1;
+	}
+	return(ft_delate_zero(s));
 }

@@ -6,13 +6,13 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 13:41:06 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/28 18:48:51 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/01/29 18:43:12 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libprintf.h"
 
-static uintmax_t	ft_unsigned_int_check_length(uintmax_t num, t_arg *arg)
+static uintmax_t	ft_unsigned_int_check_length(uintmax_t num, t_arg *arg, int conv)
 {
 	if (arg->lenght == 104104)
 		num = (unsigned char)num;
@@ -28,7 +28,7 @@ static uintmax_t	ft_unsigned_int_check_length(uintmax_t num, t_arg *arg)
 		num = (size_t)num;
 	else if (arg->lenght == 116)
 		num = (ptrdiff_t)num;
-	else
+	else if (arg->lenght == 0 && conv != 79)
 		num = (int)num;
 	return
 		(num);
@@ -41,7 +41,7 @@ int				conv_unsigned_int(va_list ap, t_arg *arg, int conv)
 	if (arg->precision)
 		arg->pad_zero = 0;
 	num = va_arg(ap, uintmax_t);
-	num = ft_unsigned_int_check_length(num, arg);
+	num = ft_unsigned_int_check_length(num, arg, conv);
 	if (arg->prefix > 0)
 	{
 		if (conv == 'X')

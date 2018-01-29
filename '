@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/12 20:53:38 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/29 19:59:06 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/01/28 19:03:02 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@ int     main(void)
 //	ft_putnbr(res);
 //	ft_putchar('\n');
 //	short w = 21458766755;
-	int w = 3625;
+	int w = 1;
+	void *c = &w;
 //	int w =  4294967295;
-	ft_printf("El character es: |%b| o puede ser %k\n", w);
-	printf("El character es: |%o| o puede ser\n", w);
+	ft_printf("El character es: |%p| o puede ser %%100\n", &w);
+	printf("El character es: |%p| o puede ser %%100\n", &w);
+//	printf("|%S|", wc);
 	return (0);
 }

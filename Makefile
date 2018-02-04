@@ -6,81 +6,72 @@
 #    By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/14 22:43:59 by jpinyot           #+#    #+#              #
-#    Updated: 2018/01/29 19:17:06 by jpinyot          ###   ########.fr        #
+#    Updated: 2018/02/01 18:17:58 by jpinyot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ft_printf
+NAME = libftprintf.a
 
-FLAGS = 
+FLAGS = -Wall -Wextra -Werror
 
-SRC = srcs/ft_printf.c\
-	  srcs/ft_printf_check_flags.c\
-	  srcs/funct/ft_printf_new_arg.c\
-	  srcs/conversions/conv_int.c\
-	  srcs/conversions/conv_unsigned_int.c\
-	  srcs/conversions/conv_char.c\
-	  srcs/conversions/conv_str.c\
-	  srcs/conversions/conv_utf_8.c\
-	  srcs/conversions/conv_str_utf_8.c\
-	  srcs/conversions/conv_void.c\
-	  srcs/conversions/conv_float.c\
-	  srcs/conversions/conv_time.c\
-	  srcs/funct/ft_printf_putint.c\
-	  srcs/funct/ft_printf_putuint.c\
-	  srcs/funct/ft_printf_putchar.c\
-	  srcs/funct/ft_printf_putstr.c\
-	  srcs/funct/ft_printf_pututf_8.c\
-	  srcs/funct/ft_printf_putstr_utf_8.c\
-	  srcs/funct/ft_printf_itoa.c\
-	  srcs/funct/ft_printf_itoa_hex.c\
-	  srcs/funct/ft_printf_itoa_oct.c\
-	  srcs/funct/ft_printf_itoa_bin.c\
-	  srcs/funct/ft_printf_from_int_to_utf_8.c\
-	  srcs/funct/ft_printf_funct.c\
-	  srcs/main.c
+SRC_DIR = srcs/
 
-OBJ = ft_printf.o\
-	  ft_printf_check_flags.o\
-	  ft_printf_new_arg.o\
-	  conv_int.o\
-	  conv_unsigned_int.o\
-	  conv_char.o\
-	  conv_str.o\
-	  conv_utf_8.o\
-	  conv_str_utf_8.o\
-	  conv_void.o\
-	  conv_float.o\
-	  conv_time.o\
-	  ft_printf_putint.o\
-	  ft_printf_putuint.o\
-	  ft_printf_putchar.o\
-	  ft_printf_putstr.o\
-	  ft_printf_pututf_8.o\
-	  ft_printf_putstr_utf_8.o\
-	  ft_printf_itoa.o\
-	  ft_printf_itoa_hex.o\
-	  ft_printf_itoa_oct.o\
-	  ft_printf_itoa_bin.o\
-	  ft_printf_from_int_to_utf_8.o\
-	  ft_printf_funct.o\
-	  main.o
+CONV_DIR = srcs/conversions/
+
+FUNC_DIR = srcs/funct/
+
+SRC = ft_printf.c\
+	  ft_printf_check_flags.c
+
+CONV = conv_int.c\
+	  conv_unsigned_int.c\
+	  conv_char.c\
+	  conv_str.c\
+	  conv_utf_8.c\
+	  conv_str_utf_8.c\
+	  conv_void.c
+
+FUNC = ft_printf_new_arg.c\
+	  ft_printf_putint.c\
+	  ft_printf_putuint.c\
+	  ft_printf_putchar.c\
+	  ft_printf_putstr.c\
+	  ft_printf_pututf_8.c\
+	  ft_printf_putstr_utf_8.c\
+	  ft_printf_itoa.c\
+	  ft_printf_itoa_hex.c\
+	  ft_printf_itoa_oct.c\
+	  ft_printf_itoa_bin.c\
+	  ft_printf_from_int_to_utf_8.c\
+	  ft_printf_funct.c
+
+LIB_SRC = ./libft/*.o
+
+OBJ_SRC = $(patsubst %.c, $(SRC_DIR)%.o, $(SRC))
+
+OBJ_CONV = $(patsubst %.c, $(CONV_DIR)%.o, $(CONV))
+
+OBJ_FUNC = $(patsubst %.c, $(FUNC_DIR)%.o, $(FUNC))
+
+OBJ = $(SRC:.c=.o) $(CONV:.c=.o) $(FUNC:.c=.o)
 
 all: $(NAME)
 
-$(NAME):
+$(NAME): $(OBJ_SRC) $(OBJ_CONV) $(OBJ_FUNC)
 	@$(MAKE) -C libft
-	@gcc $(FLAGS) -c -I./includes -I./libft $(SRC)
-	@gcc $(FLAGS) -o $(NAME) $(OBJ) -L./libft -lft
-	@printf '\033[32m[ ✔ ] %s\n\033[0m' "Correct compilation!"
+	@ar -rc $(NAME) $(OBJ) $(LIB_SRC)
+	@ranlib $(NAME)
+
+%.o : %.c
+	gcc $(FLAGS) -c -Iincludes -Ilibft $<
 
 clean:
+	@$(MAKE) -C libft clean
 	@/bin/rm -f $(OBJ)
-	@printf '\033[31m[ ✔ ] %s\n\033[0m' "Clean"
 
 fclean: clean
+	@$(MAKE) -C libft fclean
 	@/bin/rm -f $(NAME)
-	@printf '\033[31m[ ✔ ] %s\n\033[0m' "Fclean"
 
 re: fclean
 	make

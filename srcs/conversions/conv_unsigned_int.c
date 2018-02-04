@@ -6,13 +6,13 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 13:41:06 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/29 18:43:12 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/04 16:41:20 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libprintf.h"
 
-static uintmax_t	ft_unsigned_int_check_length(uintmax_t num, t_arg *arg, int conv)
+static uintmax_t	ft_check_l(uintmax_t num, t_arg *arg)
 {
 	if (arg->lenght == 104104)
 		num = (unsigned char)num;
@@ -28,20 +28,22 @@ static uintmax_t	ft_unsigned_int_check_length(uintmax_t num, t_arg *arg, int con
 		num = (size_t)num;
 	else if (arg->lenght == 116)
 		num = (ptrdiff_t)num;
-	else if (arg->lenght == 0 && conv != 79)
-		num = (int)num;
-	return
-		(num);
+	else if (arg->lenght == 0)
+		num = (unsigned int)num;
+	return (num);
 }
 
-int				conv_unsigned_int(va_list ap, t_arg *arg, int conv)
+int					conv_unsigned_int(va_list ap, t_arg *arg, int conv)
 {
-	uintmax_t	num;
+	uintmax_t num;
 
+	num = va_arg(ap, uintmax_t);
 	if (arg->precision)
 		arg->pad_zero = 0;
-	num = va_arg(ap, uintmax_t);
-	num = ft_unsigned_int_check_length(num, arg, conv);
+	if (conv != 79 && conv != 85)
+		num = ft_check_l(num, arg);
+	if (conv == 'u' || conv == 'U' || conv == 'b')
+		 arg->prefix = 0;
 	if (arg->prefix > 0)
 	{
 		if (conv == 'X')
@@ -51,5 +53,7 @@ int				conv_unsigned_int(va_list ap, t_arg *arg, int conv)
 	}
 	if (conv == 'p')
 		arg->prefix = 112;
+	 if (conv != 'o' && conv != 'O' && num == 0)
+		  arg->prefix = 0;
 	return (ft_printf_putuint(num, arg, conv));
 }

@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 10:47:19 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/22 14:22:31 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/02 18:13:13 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 t_arg	ft_printf_new_arg(t_arg *arg)
 {
+	arg->fd = 1;
 	arg->left_justify = 0;
 	arg->force_positive = 0;
 	arg->prefix = 0;
@@ -22,5 +23,6 @@ t_arg	ft_printf_new_arg(t_arg *arg)
 	arg->filed_width = 0;
 	arg->precision = 0;
 	arg->lenght = 0;
+	arg->p_switch = 0;
 	return (*arg);
 }

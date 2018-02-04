@@ -6,68 +6,78 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/12 20:53:38 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/29 19:59:00 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/03 19:16:41 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libprintf.h"
 #include <stdio.h>
 
-static char	*ft_print_until(char *c)
+static char	*ft_print_until(char *c, int *cnt)
 {
-
 	while (*c)
 	{
-		if (*c == '%')
+		if (*c == '%' && c[1] != 0)
 			return (c + 1);
+		else if (*c == '%' && c[1] == 0)
+			return (NULL);
 		write(1, c, 1);
 		c++;
+		*cnt += 1;
 	}
 	return (NULL);
 }
 
-char       *ft_printf_flags(va_list ap, char *s)
+char       *ft_printf_flags(va_list ap, char *s, int *z)
 {
 	t_arg   arg;
+	int		i;
 
+	i = *z;
 	arg = ft_printf_new_arg(&arg);
 	s = ft_check_flags(s, &arg);
 	s = ft_check_field_with(ap, s, &arg);
 	s = ft_check_precision(ap, s, &arg);
 	s = ft_check_length(s, &arg);
-	int z = 0;
 	if (*s == 'i' || *s =='d' || *s == 'D')
-		z = conv_int(ap, &arg, *s);
-	if (*s == 'u' || *s == 'U' || *s == 'x' || *s == 'X' || *s == 'o' || *s == 'O' || *s == 'b')
-		z = conv_unsigned_int(ap, &arg, *s);
-	if (*s == 'p')
-		z = conv_void(ap, &arg, *s);
-	if (*s == 'c')
-		z = conv_char(ap, &arg);
-	if (*s == 'C')
-		z = conv_utf_8(ap, &arg);
-	if (*s == 's')
-		z = conv_str(ap, &arg);
-	if (*s == 'S')
-		z = conv_str_utf_8(ap, &arg);
-	if (*s == '%')
-		write(1, "%", 1);
-//	if (*s == 'f')
-//		conv_float(ap, &arg);
-	if (*s == 'k')
-		conv_time(ap, &arg);
-	s++;
-	return (s);
+		*z += conv_int(ap, &arg, *s);
+	else if (*s == 'u' || *s == 'U' || *s == 'x' || *s == 'X' || *s == 'o' || *s == 'O' || *s == 'b')
+		*z += conv_unsigned_int(ap, &arg, *s);
+	else if (*s == 'p')
+		*z += conv_void(ap, &arg, *s);
+	else if (*s == 'c' && arg.lenght != 'l')
+		*z += conv_char(ap, &arg);
+	else if (*s == 'C' || (*s == 'c' && arg.lenght == 'l'))
+		*z += conv_utf_8(ap, &arg);
+	else if (*s == 's' && arg.lenght != 'l')
+		*z += conv_str(ap, &arg);
+	else if (*s == 'S' || (*s == 's' && arg.lenght == 'l'))
+		*z += conv_str_utf_8(ap, &arg);
+	else if (*s == '%')
+		*z += ft_printf_putchar('%', &arg);
+	else if (*s != 0)
+		*z += ft_printf_putchar(*s, &arg);
+	else
+		return (s);
+	return (s + 1);
 }
 
 int			ft_printf(const char *restrict format, ...)
 {
 	char	*tmp;
 	va_list	ap;
+	int		cnt;
 
+	cnt = 0;
 	tmp = (char *)format;
 	va_start(ap, format);
-	while (((tmp = ft_print_until(tmp)) != NULL))
-		tmp  = ft_printf_flags(ap, tmp);
-	return (0);
+	while (((tmp = ft_print_until(tmp, &cnt)) != NULL))
+	{
+		tmp  = ft_printf_flags(ap, tmp, &cnt);
+//	write(1, "&", 1);
+//	ft_putnbr(cnt);
+//	write(1, "&", 1);
+	}
+	va_end(ap);
+	return (cnt);
 }

@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 08:20:08 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/25 09:14:13 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/03 19:42:33 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_check_flags(char *s, t_arg *arg)
 			arg->force_positive = 32;
 		if (*s == '+')
 			arg->force_positive = 1;
-		if(*s == 39)
+		if (*s == 39)
 			arg->thousands_group = 1;
 		s++;
 	}
@@ -39,11 +39,11 @@ char	*ft_check_flags(char *s, t_arg *arg)
 
 char	*ft_check_field_with(va_list ap, char *s, t_arg *arg)
 {
-
-	if (*s == '*' || ft_isdigit(*s))
+	while (*s == '*' || ft_isdigit(*s))
 	{
 		if (ft_isdigit(*s))
 		{
+			arg->filed_width = 0;
 			while (ft_isdigit(*s))
 			{
 				arg->filed_width = arg->filed_width * 10 + (*s - '0');
@@ -52,25 +52,27 @@ char	*ft_check_field_with(va_list ap, char *s, t_arg *arg)
 		}
 		if (*s == '*')
 		{
-			arg->filed_width = va_arg(ap, int);
-			if (arg->filed_width < 0)
+			if ((arg->filed_width = va_arg(ap, int)) < 0)
+			{
 				arg->left_justify = 1;
+				arg->filed_width *= -1;
+			}
 			s++;
 		}
 	}
-		return(s);
+	return (s);
 }
 
 char	*ft_check_precision(va_list ap, char *s, t_arg *arg)
 {
 	if (*s == '.')
 	{
+		arg->p_switch = 1;
 		s++;
 		if (*s == '*')
 		{
 			s++;
-			if ((arg->precision = va_arg(ap, int)) < 0)
-				arg->precision = 0;
+			arg->precision = va_arg(ap, int);
 			return (s);
 		}
 		else
@@ -83,22 +85,23 @@ char	*ft_check_precision(va_list ap, char *s, t_arg *arg)
 			return (s);
 		}
 	}
-		return (s);
+	return (s);
 }
 
 char	*ft_check_length(char *s, t_arg *arg)
 {
-	if (*s == 'h' && (*s + 1) == 'h')
+	if (*s == 'h' && s[1] == 'h')
 	{
 		arg->lenght = 104104;
 		return (s + 2);
 	}
-	else if (*s == 'l' && (*s + 1) == 'l')
+	else if (*s == 'l' && s[1] == 'l')
 	{
 		arg->lenght = 108108;
 		return (s + 2);
 	}
-	else if (*s == 'l' || *s == 'h' || *s == 'j' || *s == 'z' || *s == 't' || *s == 'L')
+	else if (*s == 'l' || *s == 'h' || *s == 'j'
+			|| *s == 'z' || *s == 't' || *s == 'L')
 	{
 		arg->lenght = *s + 0;
 		return (s + 1);

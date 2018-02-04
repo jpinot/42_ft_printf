@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:32:14 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/29 18:44:24 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/04 16:40:11 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,56 +14,73 @@
 
 static int	ft_uint_write_nonjust(char *n, t_arg *arg)
 {
+	int cnt;
+
+	cnt = 0;
 	if (arg->prefix == 'x' || arg->prefix == 'X')
 		arg->filed_width -= 2;
-	if (arg->filed_width > 0 && arg->pad_zero)
-		ft_write('0', arg->filed_width);
-	else if (arg->filed_width > 0 && arg->pad_zero == 0)
-		ft_write(' ', arg->filed_width);
+	if (arg->filed_width > 0 && arg->pad_zero == 0)
+		cnt += ft_pf_write_until(' ', arg->filed_width, arg->fd);
 	if (arg->prefix > 0)
-	write(1, "0", 1);
+		cnt += ft_pf_putchar('0', arg->fd);
 	if (arg->prefix == 'x' || arg->prefix == 'X')
-		write(1, &arg->prefix, 1);
-	if (arg->force_positive)
-		write(1, &arg->force_positive, 1);
+		cnt += ft_pf_putchar(arg->prefix, arg->fd);
+	if (arg->filed_width > 0 && arg->pad_zero)
+		cnt += ft_pf_write_until('0', arg->filed_width, arg->fd);
 	if (arg->precision > 0)
-		ft_write('0', arg->precision);
-	ft_putstr(n);
-	return (1);
+		cnt += ft_pf_write_until('0', arg->precision, arg->fd);
+	cnt += ft_pf_putstr(n, arg->fd);
+//	if (conv == 'u' || conv == 'U')		//WTF????
+//		ft_strdel(&n);
+	return (cnt);
 }
 
 static int	ft_uint_write_just(char *n, t_arg *arg)
 {
+	int cnt;
+
+	cnt = 0;
 	if (arg->prefix == 'x' || arg->prefix == 'X')
 		arg->filed_width -= 2;
 	if (arg->prefix > 0)
-		write(1, "0", 1);
+		cnt += ft_pf_putchar('0', arg->fd);
 	if (arg->prefix == 'x' || arg->prefix == 'X')
-		write(1, &arg->prefix, 1);
-	if (arg->force_positive)
-		write(1, &arg->force_positive, 1);
-	if (arg->precision)
-		ft_write('0', arg->precision);
-	ft_putstr(n);
+		cnt += ft_pf_putchar(arg->prefix, arg->fd);
+	if (arg->precision > 0)
+		cnt += ft_pf_write_until('0', arg->precision, arg->fd);
+	cnt += ft_pf_putstr(n, arg->fd);
 	if (arg->filed_width > 0)
-		ft_write(' ', arg->filed_width);
-	return (1);
+		cnt += ft_pf_write_until(' ', arg->filed_width, arg->fd);
+//	if (*n)
+//		ft_strdel(&n);
+	return (cnt);
 }
 
-int			ft_printf_putuint(uintmax_t num, t_arg *arg, int conv)
+static char	*ft_check_conv(uintmax_t num, int conv, t_arg *arg, char *n)
 {
-	char	*n;
-	int		len;
 
 	if (conv == 'x' || conv == 'X' || conv == 'p')
-		n = ft_printf_itoa_hex(num, conv);
+		n = ft_printf_itoa_hex(num, conv, arg);
 	else if (conv == 'o' || conv == 'O')
-		n = ft_printf_itoa_oct(num);
+		n = ft_printf_itoa_oct(num, arg);
 	else if (conv == 'b')
 		n = ft_printf_itoa_bin(num);
 	else
 		n = ft_printf_itoa(num);
+	return (n);
+}
+
+int			ft_printf_putuint(uintmax_t num, t_arg *arg, int conv)
+{
+	char	*n = NULL;
+	int		len;
+	int		cnt;
+
+	cnt = 0;
+	n = ft_check_conv(num, conv, arg, n);
 	len = ft_strlen(n);
+	if  (num == 0 && arg->p_switch && arg->precision == 0)
+		return (ft_uint_write_nonjust("", arg));
 	arg->precision -= len;
 	if (arg->precision > 0)
 		arg->filed_width -= (arg->precision + len);
@@ -76,8 +93,9 @@ int			ft_printf_putuint(uintmax_t num, t_arg *arg, int conv)
 	else if (arg->prefix == '0' && arg->precision > 0)
 		arg->prefix = 0;
 	if (arg->left_justify == 0)
-		return (ft_uint_write_nonjust(n, arg));
+		cnt += ft_uint_write_nonjust(n, arg);
 	else
-		return (ft_uint_write_just(n, arg));
-	return (0);
+		cnt += ft_uint_write_just(n, arg);
+	free(n);
+	return (cnt);
 }

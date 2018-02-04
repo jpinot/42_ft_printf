@@ -6,44 +6,50 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:31:29 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/28 18:38:26 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/04 15:29:09 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libprintf.h"
 
-static int	ft_int_write(char *n, t_arg *arg)
+static int	ft_int_write(char *n, t_arg *arg, int cnt)
 {
 	if (arg->left_justify == 0)
 	{
-		if (arg->filed_width > 0 && arg->pad_zero)
-			ft_write('0', arg->filed_width);
-		else if (arg->filed_width > 0 && arg->pad_zero == 0)
-			ft_write(' ', arg->filed_width);
+		if (arg->filed_width > 0 && arg->pad_zero == 0)
+			cnt += ft_pf_write_until(' ', arg->filed_width, arg->fd);
 		if (arg->force_positive)
-			write(1, &arg->force_positive, 1);
+			cnt += ft_pf_putchar(arg->force_positive, arg->fd);
+		if (arg->filed_width > 0 && arg->pad_zero)
+			cnt += ft_pf_write_until('0', arg->filed_width, arg->fd);
 		if (arg->precision > 0)
-			ft_write('0', arg->precision);
-		ft_putstr(n);
+			cnt += ft_pf_write_until('0', arg->precision, arg->fd);
+		cnt += ft_pf_putstr(n, arg->fd);
 	}
 	else
 	{
 		if (arg->force_positive)
-			write(1, &arg->force_positive, 1);
-		if (arg->precision)
-			ft_write('0', arg->precision);
-		ft_putstr(n);
+			cnt += ft_pf_putchar(arg->force_positive, arg->fd);
+		if (arg->precision > 0)
+			cnt += ft_pf_write_until('0', arg->precision, arg->fd);
+		cnt += ft_pf_putstr(n, arg->fd);
 		if (arg->filed_width > 0)
-			ft_write(' ', arg->filed_width);
+			cnt += ft_pf_write_until(' ', arg->filed_width, arg->fd);
 	}
-	return (1);
+	if(*n)
+		ft_strdel(&n);
+	return (cnt);
 }
 
 int			ft_printf_putint(intmax_t num, t_arg *arg)
 {
 	char	*n;
 	int		len;
+	int		cnt;
 
+	cnt = 0;
+	if  (num == 0 && arg->p_switch && arg->precision == 0)
+		return (ft_int_write("", arg, cnt));
 	n = ft_printf_itoa(num);
 	len = ft_strlen(n);
 	arg->precision -= len;
@@ -53,6 +59,5 @@ int			ft_printf_putint(intmax_t num, t_arg *arg)
 		arg->filed_width -= len;
 	if (arg->force_positive)
 		arg->filed_width -= 1;
-	return (ft_int_write(n, arg));
-	return (0);
+	return (ft_int_write(n, arg, cnt));
 }

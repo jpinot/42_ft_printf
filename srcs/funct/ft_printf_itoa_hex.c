@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 15:59:43 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/29 18:37:44 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/03 13:24:50 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,65 @@
 
 static char	*ft_delate_zero(char *s)
 {
+	char *tmp;
+
+	tmp = s;
 	while (*s == '0')
 		s++;
+	s = ft_strdup(s);
+	ft_strdel(&tmp);
 	return (s);
+
 }
 
-char		*ft_printf_itoa_hex(uintmax_t num, int conv)
+static char	*ft_up(uintmax_t num, char *up)
+{
+	int		i;
+	char	*s;
+
+	i = 16;
+	s = (char *)malloc(sizeof(uintmax_t) * 2 + 1);
+	ft_strcpy(s, "0");
+	while (i > 0)
+	{
+		s[i--] = up[(num & 0xF)];
+		num >>= 4;
+	}
+	return (ft_delate_zero(s));
+}
+
+static char	*ft_down(uintmax_t num, char *down)
+{
+	int		i;
+	char	*s;
+
+	i = 16;
+	s = (char *)malloc(sizeof(uintmax_t) * 2 + 1);
+	ft_strcpy(s, "0");
+	while (i > 0)
+	{
+		s[i--] = down[(num & 0xF)];
+		num >>= 4;
+	}
+	return (ft_delate_zero(s));
+}
+
+char		*ft_printf_itoa_hex(uintmax_t num, int conv, t_arg *arg)
 {
 	char	*up;
 	char	*down;
 	char	*s;
 	int		i;
 
+	s = NULL;
 	up = "0123456789ABCDEF";
 	down = "0123456789abcdef";
 	i = 16;
-	s = (char *)malloc(sizeof(uintmax_t) * 2 + 1);
-	ft_strcpy(s, "0");
-	if (num == 0)
-		return(s);
+	if (num == 0 && arg->p_switch != 1)
+		return (ft_strdup("0"));
 	if (conv == 'X')
-	{
-		while (i > 0)
-		{
-			s[i--] = up[(num & 0xF)];
-			num >>= 4;
-		}
-	}
+		s = ft_up(num, up);
 	else
-	{
-		while (i > 0)
-		{
-			s[i--] = down[(num & 0xF)];
-			num >>= 4;
-		}
-	}
-	return(ft_delate_zero(s));
+		s = ft_down(num, down);
+	return (s);
 }

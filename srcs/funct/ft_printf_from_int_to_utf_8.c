@@ -6,26 +6,28 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 09:49:14 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/29 18:11:55 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/04 18:25:24 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libprintf.h"
 
-static char	*from_int_to_utf_1(int c)
+static char	*from_int_to_utf_1(int c, t_arg *arg)
 {
 	char *a;
 
+	arg->filed_width -= 1;
 	a = ft_strnew(2);
 	*a = (char)c;
 	return (a);
 }
 
-static char *from_int_to_utf_2(int c)
+static char	*from_int_to_utf_2(int c, t_arg *arg)
 {
 	char *a;
 
-	a = (char *)malloc(sizeof(char) * 2);
+	arg->filed_width -= 2;
+	a = ft_strnew(3);
 	a[1] = c & 0x3f;
 	a[1] = 0x80 | a[1];
 	c >>= 6;
@@ -34,11 +36,12 @@ static char *from_int_to_utf_2(int c)
 	return (a);
 }
 
-static char *from_int_to_utf_3(int c)
+static char	*from_int_to_utf_3(int c, t_arg *arg)
 {
 	char *a;
 
-	a = (char *)malloc(sizeof(char) * 3);
+	arg->filed_width -= 3;
+	a = ft_strnew(4);
 	a[2] = c & 0x3f;
 	a[2] = 0x80 | a[2];
 	c >>= 6;
@@ -50,11 +53,12 @@ static char *from_int_to_utf_3(int c)
 	return (a);
 }
 
-static char *from_int_to_utf_4(int c)
+static char	*from_int_to_utf_4(int c, t_arg *arg)
 {
 	char *a;
 
-	a = (char *)malloc(sizeof(char) * 4);
+	arg->filed_width -= 4;
+	a = ft_strnew(5);
 	a[3] = c & 0x3f;
 	a[3] = 0x80 | a[3];
 	c >>= 6;
@@ -69,19 +73,18 @@ static char *from_int_to_utf_4(int c)
 	return (a);
 }
 
-char		*ft_printf_from_int_to_utf_8(int c)
+char		*ft_printf_from_int_to_utf_8(int c, t_arg *arg)
 {
 	char *a;
 
 	a = NULL;
 	if (c <= 127)
-		a = from_int_to_utf_1(c);
+		a = from_int_to_utf_1(c, arg);
 	else if (c >= 128 && c <= 2047)
-		a = from_int_to_utf_2(c);
+		a = from_int_to_utf_2(c, arg);
 	else if (c >= 2048 && c <= 65534)
-		a = from_int_to_utf_3(c);
+		a = from_int_to_utf_3(c, arg);
 	else if (c >= 65535 && c <= 2097150)
-		a = from_int_to_utf_4(c);
-//	write(1, "%", 1);
-	return(a);
+		a = from_int_to_utf_4(c, arg);
+	return (a);
 }

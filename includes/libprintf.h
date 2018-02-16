@@ -47,7 +47,7 @@ int         ft_printf_putuint(uintmax_t num, t_arg *arg, int conv);
 int			ft_printf_putchar(char c, t_arg *arg);
 int         ft_printf_putstr(char *s, t_arg *arg);
 int         ft_printf_pututf_8(char *c, t_arg *arg);
-int         ft_printf_putstr_utf_8(char **c, t_arg *arg);
+int         ft_printf_putstr_utf_8(char *c, t_arg *arg);
 char        *ft_printf_itoa(uintmax_t n);
 char        *ft_printf_itoa_hex(uintmax_t num, int conv, t_arg *arg);
 char        *ft_printf_itoa_oct(uintmax_t num, t_arg *arg);

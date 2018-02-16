@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 11:52:39 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/03 19:41:00 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/16 16:38:22 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int				conv_int(va_list ap, t_arg *arg, int conv)
 	intmax_t	num;
 	t_arg		tmp;
 
-	if (arg->precision > 0)
+	if (arg->p_switch && arg->precision >= 0)
 		arg->pad_zero = 0;
 	num = va_arg(ap, intmax_t);
 	if (conv != 'D')

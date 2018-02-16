@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:32:14 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/04 16:40:11 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/14 21:52:18 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ static int	ft_uint_write_nonjust(char *n, t_arg *arg)
 		cnt += ft_pf_write_until('0', arg->filed_width, arg->fd);
 	if (arg->precision > 0)
 		cnt += ft_pf_write_until('0', arg->precision, arg->fd);
+//	ft_putchar('<');
+//	write(1, n, ft_strlen(n));
+//	ft_putchar('>');
 	cnt += ft_pf_putstr(n, arg->fd);
 //	if (conv == 'u' || conv == 'U')		//WTF????
 //		ft_strdel(&n);
@@ -96,6 +99,6 @@ int			ft_printf_putuint(uintmax_t num, t_arg *arg, int conv)
 		cnt += ft_uint_write_nonjust(n, arg);
 	else
 		cnt += ft_uint_write_just(n, arg);
-	free(n);
+	ft_strdel(&n);
 	return (cnt);
 }

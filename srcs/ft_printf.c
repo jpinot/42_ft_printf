@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/12 20:53:38 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/03 19:16:41 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/16 17:20:07 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,8 @@ int			ft_printf(const char *restrict format, ...)
 	while (((tmp = ft_print_until(tmp, &cnt)) != NULL))
 	{
 		tmp  = ft_printf_flags(ap, tmp, &cnt);
-//	write(1, "&", 1);
-//	ft_putnbr(cnt);
-//	write(1, "&", 1);
+		if (cnt == -1)
+			return (-1);
 	}
 	va_end(ap);
 	return (cnt);

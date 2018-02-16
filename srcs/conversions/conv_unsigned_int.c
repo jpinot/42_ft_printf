@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 13:41:06 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/04 16:41:20 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/16 16:38:20 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int					conv_unsigned_int(va_list ap, t_arg *arg, int conv)
 	uintmax_t num;
 
 	num = va_arg(ap, uintmax_t);
-	if (arg->precision)
+	if (arg->p_switch && arg->precision >= 0)
 		arg->pad_zero = 0;
 	if (conv != 79 && conv != 85)
 		num = ft_check_l(num, arg);

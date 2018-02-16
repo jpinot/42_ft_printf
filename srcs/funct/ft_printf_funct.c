@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 15:54:26 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/04 17:00:11 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/16 15:50:16 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,7 @@ int		ft_pf_putstr(char *s, int fd)
 	int i;
 
 	i = 0;
-	if (s == NULL)
-	{
-		write(fd, "(null)", 6);
-		i += 6;
-	}
-	else
+	if (s != NULL)
 	{
 		while (s[i])
 		{
@@ -64,12 +59,7 @@ int		ft_pf_putstr_until(char *s, int j, int fd)
 	int i;
 
 	i = 0;
-	if (s == NULL)
-	{
-		write(fd, "(null)", 6);
-		i += 6;
-	}
-	else
+	if (s != NULL)
 	{
 		while (i < j && s[i])
 		{

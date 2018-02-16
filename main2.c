@@ -1,40 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_itoa.c                                   :+:      :+:    :+:   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/21 18:00:51 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/14 18:26:13 by jpinyot          ###   ########.fr       */
+/*   Created: 2017/12/12 20:53:38 by jpinyot           #+#    #+#             */
+/*   Updated: 2018/02/16 17:13:27 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libprintf.h"
-
-static int	ft_len(uintmax_t n)
+#include <stdio.h>
+#include <locale.h>
+#include <limits.h>
+int     main(void)
 {
-	size_t len;
+//	setlocale(LC_ALL, "");	
 
-	len = 2;
-	while (n /= 10)
-		len++;
-	return (len);
-}
+	wchar_t s[4];
 
-char		*ft_printf_itoa(uintmax_t n)
-{
-	size_t	len;
-	char	*s;
+	s[0] = 0x53;
+	s[1] = 0xd800;
+	s[2] = 0x81000;
+	s[3] = '\0';
 
-	len = ft_len(n);
-	if (!(s = (char *)malloc(sizeof(char) * len)))
-		return (NULL);
-	s[--len] = '\0';
-	while (len--)
-	{
-		s[len] = n % 10 + 48;
-		n = n / 10;
-	}
-	return (s);
+	int i =	ft_printf("%8C et coco %C titi %lc", 'f', -5, 'a');
+	write(1, "\n", 1);
+	int j = printf("%8C et coco %C titi %lc", 'f', -5, 'a');
+	printf("\nf: %i\no: %i", i, j);
+	return (0);
 }

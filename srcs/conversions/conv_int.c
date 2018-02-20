@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 11:52:39 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/16 16:38:22 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/16 20:10:53 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static intmax_t	ft_int_check_length(intmax_t num, t_arg *arg)
 	return (num);
 }
 
-int				conv_int(va_list ap, t_arg *arg, int conv)
+int				conv_int(va_list ap, t_arg *arg, int conv, char *f)
 {
 	intmax_t	num;
 	t_arg		tmp;
@@ -51,5 +51,6 @@ int				conv_int(va_list ap, t_arg *arg, int conv)
 		num = -(num);
 	}
 	tmp = *arg;
+	ft_putstr_fd(f, arg->fd);
 	return (ft_printf_putint(num, &tmp));
 }

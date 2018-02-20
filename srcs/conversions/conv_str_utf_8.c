@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 09:42:01 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/16 16:37:15 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/20 16:41:42 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,21 @@ static int		ft_check_n(int nbr)
 		cnt += 4;
 	return (cnt);
 }
-int				conv_str_utf_8(va_list ap, t_arg *arg)
+
+static int		ft_check_correct_arg(int *s)
+{
+	int i;
+
+	i = 0;
+	while (s[i++])
+	{
+		if (s[i] < 0 || (s[i] >= 0xd800 && s[i] < 0xe000) || s[i] > 0x81000)
+			return (-1);
+	}
+	return (0);
+}
+
+int				conv_str_utf_8(va_list ap, t_arg *arg, char *f)
 {
 	int		*s;
 	char	*a;
@@ -59,10 +73,14 @@ int				conv_str_utf_8(va_list ap, t_arg *arg)
 	int		i;
 	int		j;
 
-	if((s = va_arg(ap, int *)) == NULL)
-			return (ft_printf_putstr("(null)", arg));
 	i = 0;
 	j = 0;
+	s = va_arg(ap, int *);
+	ft_putstr_fd(f, arg->fd);
+	if (ft_check_correct_arg(s) == -1)
+		return (-1);
+	if (s == NULL)
+		return (ft_printf_putstr("(null)", arg));
 	if (arg->p_switch == 0)
 		arg->precision = ft_nbrlen(s);
 	if (s && ft_check_n(*s) <= arg->precision)

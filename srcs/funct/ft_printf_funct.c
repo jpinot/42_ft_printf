@@ -6,22 +6,12 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 15:54:26 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/16 15:50:16 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/17 20:34:41 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libprintf.h"
-/*
-static void ft_pf_memdel(char **ap)
-{
-	if (ap != NULL)
-	{
-		if (*ap)
-			free(*ap);
-		*ap = NULL;
-	}
-}
-*/
+
 int		ft_pf_write_until(char c, int j, int fd)
 {
 	int i;
@@ -70,12 +60,34 @@ int		ft_pf_putstr_until(char *s, int j, int fd)
 	return (j);
 }
 
-int		ft_pf_strlen(const char *str)
+char	*ft_pf_copy_until(char *c, int *cnt, char **ret)
 {
-	char *s;
+	int		i;
+	char	*tmp;
 
-	s = (char *)str;
-	while (*s)
-		s++;
-	return (s - str);
+	tmp = c;
+	if (c == NULL)
+		return (NULL);
+	while (*c)
+	{
+		if (*c == '%' && c[1] != 0)
+			break;
+		else if (*c == '%' && c[1] == 0)
+			return (NULL);
+		c++;
+		*cnt += 1;
+	}
+	i = c - tmp;
+//	if (tmp[i - 1] == '%')
+//		i -= 1;
+//	ft_putchar(tmp[i]);
+	if (i > 0)
+	{
+		*ret = ft_strnew(i);
+		*ret = ft_strncpy(*ret, tmp, i);
+	}
+	else
+		*ret = 0;
+//	write(1, "8", 1);
+	return (c);
 }

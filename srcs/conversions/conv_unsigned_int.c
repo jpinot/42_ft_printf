@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 13:41:06 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/16 16:38:20 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/20 16:41:10 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static uintmax_t	ft_check_l(uintmax_t num, t_arg *arg)
 	return (num);
 }
 
-int					conv_unsigned_int(va_list ap, t_arg *arg, int conv)
+int					conv_unsigned_int(va_list ap, t_arg *arg, int conv, char *f)
 {
 	uintmax_t num;
 
@@ -43,7 +43,7 @@ int					conv_unsigned_int(va_list ap, t_arg *arg, int conv)
 	if (conv != 79 && conv != 85)
 		num = ft_check_l(num, arg);
 	if (conv == 'u' || conv == 'U' || conv == 'b')
-		 arg->prefix = 0;
+		arg->prefix = 0;
 	if (arg->prefix > 0)
 	{
 		if (conv == 'X')
@@ -53,7 +53,8 @@ int					conv_unsigned_int(va_list ap, t_arg *arg, int conv)
 	}
 	if (conv == 'p')
 		arg->prefix = 112;
-	 if (conv != 'o' && conv != 'O' && num == 0)
-		  arg->prefix = 0;
+	if (conv != 'o' && conv != 'O' && num == 0)
+		arg->prefix = 0;
+	ft_putstr_fd(f, arg->fd);
 	return (ft_printf_putuint(num, arg, conv));
 }

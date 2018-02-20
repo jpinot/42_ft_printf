@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 22:54:06 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/03 19:18:16 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/17 20:34:39 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@
 # include "../libft/libft.h"
 # include "stddef.h"
 
-//#define CONVERSIONS sSpdDioOuUxXcCeEfFgGaAn
-//static const char conv[] = {CONVERSIONS};
+static char g_conv[] =  "#0-+*.hh hllljz";
 
 typedef struct		s_arg
 {
@@ -58,18 +57,19 @@ int			ft_pf_write_until(char c, int j, int fd);
 int			ft_pf_putstr(char *s, int fd);
 int			ft_pf_putchar(char c, int fd);
 int			ft_pf_putstr_until(char *s, int i, int fd);
-int			ft_pf_strlen(const char *s);
+char		*ft_pf_copy_until(char *c, int *cnt, char **ret);
+
 
 char	*ft_check_flags(char *s, t_arg *arg);
 char	*ft_check_field_with(va_list ap, char *s, t_arg *arg);
 char	*ft_check_precision(va_list ap, char *s, t_arg *arg);
 char	*ft_check_length(char *s, t_arg *arg);
 
-int		conv_int(va_list ap, t_arg *arg, int conv);
-int		conv_unsigned_int(va_list ap, t_arg *arg, int conv);
-int     conv_char(va_list ap, t_arg *arg);
-int     conv_str(va_list ap, t_arg *arg);
-int		conv_void(va_list ap, t_arg *arg, int conv);
-int		conv_utf_8(va_list ap, t_arg *arg);
-int     conv_str_utf_8(va_list ap, t_arg *arg);
+int		conv_int(va_list ap, t_arg *arg, int conv, char *f);
+int		conv_unsigned_int(va_list ap, t_arg *arg, int conv, char *f);
+int     conv_char(va_list ap, t_arg *arg, char *f);
+int     conv_str(va_list ap, t_arg *arg, char *f);
+int		conv_void(va_list ap, t_arg *arg, int conv, char *f);
+int		conv_utf_8(va_list ap, t_arg *arg, char *f);
+int     conv_str_utf_8(va_list ap, t_arg *arg, char *f);
 #endif

@@ -6,13 +6,13 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 19:00:27 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/01/28 20:12:33 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/16 20:16:55 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libprintf.h"
 
-int				conv_void(va_list ap, t_arg *arg, int conv)
+int				conv_void(va_list ap, t_arg *arg, int conv, char *f)
 {
 	void	*num;
 
@@ -20,5 +20,6 @@ int				conv_void(va_list ap, t_arg *arg, int conv)
 		arg->pad_zero = 0;
 	num = va_arg(ap, void *);
 	arg->prefix = 120;
+	ft_putstr_fd(f, arg->fd);
 	return (ft_printf_putuint((uintmax_t)num, arg, conv));
 }

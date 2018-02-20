@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:32:14 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/14 21:52:18 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/16 22:46:32 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,7 @@ static int	ft_uint_write_nonjust(char *n, t_arg *arg)
 		cnt += ft_pf_write_until('0', arg->filed_width, arg->fd);
 	if (arg->precision > 0)
 		cnt += ft_pf_write_until('0', arg->precision, arg->fd);
-//	ft_putchar('<');
-//	write(1, n, ft_strlen(n));
-//	ft_putchar('>');
 	cnt += ft_pf_putstr(n, arg->fd);
-//	if (conv == 'u' || conv == 'U')		//WTF????
-//		ft_strdel(&n);
 	return (cnt);
 }
 
@@ -54,8 +49,6 @@ static int	ft_uint_write_just(char *n, t_arg *arg)
 	cnt += ft_pf_putstr(n, arg->fd);
 	if (arg->filed_width > 0)
 		cnt += ft_pf_write_until(' ', arg->filed_width, arg->fd);
-//	if (*n)
-//		ft_strdel(&n);
 	return (cnt);
 }
 
@@ -89,8 +82,9 @@ int			ft_printf_putuint(uintmax_t num, t_arg *arg, int conv)
 		arg->filed_width -= (arg->precision + len);
 	else if (arg->precision <= 0)
 		arg->filed_width -= len;
-	if (arg->force_positive == 32)
-		arg->filed_width -= 1;
+//	if (arg->force_positive == 32)
+//		arg->filed_width -= 1;
+//	ft_putnbr(arg->filed_width);
 	if (arg->precision <= 0 && arg->prefix == '0')
 		arg->filed_width -= 1;
 	else if (arg->prefix == '0' && arg->precision > 0)

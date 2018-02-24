@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 08:20:08 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/17 18:48:20 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/23 15:39:56 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ char	*ft_check_flags(char *s, t_arg *arg)
 			arg->force_positive = 32;
 		if (*s == '+')
 			arg->force_positive = 1;
-		if (*s == 39)
-			arg->thousands_group = 1;
 		s++;
 	}
 	if (arg->left_justify)

@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 15:54:26 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/17 20:34:41 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/20 18:07:45 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,13 @@ char	*ft_pf_copy_until(char *c, int *cnt, char **ret)
 	while (*c)
 	{
 		if (*c == '%' && c[1] != 0)
-			break;
+			break ;
 		else if (*c == '%' && c[1] == 0)
 			return (NULL);
 		c++;
 		*cnt += 1;
 	}
 	i = c - tmp;
-//	if (tmp[i - 1] == '%')
-//		i -= 1;
-//	ft_putchar(tmp[i]);
 	if (i > 0)
 	{
 		*ret = ft_strnew(i);
@@ -88,6 +85,5 @@ char	*ft_pf_copy_until(char *c, int *cnt, char **ret)
 	}
 	else
 		*ret = 0;
-//	write(1, "8", 1);
 	return (c);
 }

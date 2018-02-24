@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 15:59:43 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/14 18:13:37 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/22 18:58:26 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static char	*ft_delate_zero(char *s)
 	s = ft_strdup(s);
 	ft_strdel(&tmp);
 	return (s);
-
 }
 
 static char	*ft_up(uintmax_t num, char *up)
@@ -31,7 +30,7 @@ static char	*ft_up(uintmax_t num, char *up)
 	char	*s;
 
 	i = 16;
-	s = (char *)malloc(sizeof(uintmax_t) * 2 + 1);
+	s = ft_strnew(sizeof(uintmax_t) * 2 + 1);
 	ft_strcpy(s, "0");
 	while (i > 0)
 	{
@@ -47,7 +46,7 @@ static char	*ft_down(uintmax_t num, char *down)
 	char	*s;
 
 	i = 16;
-	s = (char *)malloc(sizeof(uintmax_t) * 2 + 1);
+	s = ft_strnew(sizeof(uintmax_t) * 2 + 1);
 	ft_strcpy(s, "0");
 	while (i > 0)
 	{

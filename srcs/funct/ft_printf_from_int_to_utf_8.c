@@ -6,13 +6,13 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 09:49:14 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/04 18:25:24 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/21 15:09:39 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libprintf.h"
 
-static char	*from_int_to_utf_1(int c, t_arg *arg)
+static char	*from_int_to_utf_1(wchar_t c, t_arg *arg)
 {
 	char *a;
 
@@ -22,7 +22,7 @@ static char	*from_int_to_utf_1(int c, t_arg *arg)
 	return (a);
 }
 
-static char	*from_int_to_utf_2(int c, t_arg *arg)
+static char	*from_int_to_utf_2(wchar_t c, t_arg *arg)
 {
 	char *a;
 
@@ -36,7 +36,7 @@ static char	*from_int_to_utf_2(int c, t_arg *arg)
 	return (a);
 }
 
-static char	*from_int_to_utf_3(int c, t_arg *arg)
+static char	*from_int_to_utf_3(wchar_t c, t_arg *arg)
 {
 	char *a;
 
@@ -53,7 +53,7 @@ static char	*from_int_to_utf_3(int c, t_arg *arg)
 	return (a);
 }
 
-static char	*from_int_to_utf_4(int c, t_arg *arg)
+static char	*from_int_to_utf_4(wchar_t c, t_arg *arg)
 {
 	char *a;
 
@@ -73,7 +73,7 @@ static char	*from_int_to_utf_4(int c, t_arg *arg)
 	return (a);
 }
 
-char		*ft_printf_from_int_to_utf_8(int c, t_arg *arg)
+char		*ft_printf_from_int_to_utf_8(wchar_t c, t_arg *arg)
 {
 	char *a;
 
@@ -82,9 +82,9 @@ char		*ft_printf_from_int_to_utf_8(int c, t_arg *arg)
 		a = from_int_to_utf_1(c, arg);
 	else if (c >= 128 && c <= 2047)
 		a = from_int_to_utf_2(c, arg);
-	else if (c >= 2048 && c <= 65534)
+	else if (c >= 2048 && c <= 65535)
 		a = from_int_to_utf_3(c, arg);
-	else if (c >= 65535 && c <= 2097150)
+	else if (c >= 65536 && c <= 2097150)
 		a = from_int_to_utf_4(c, arg);
 	return (a);
 }

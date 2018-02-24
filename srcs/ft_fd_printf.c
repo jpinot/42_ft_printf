@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_fd_printf.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/12 20:53:38 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/21 16:19:46 by jpinyot          ###   ########.fr       */
+/*   Created: 2018/02/22 19:03:28 by jpinyot           #+#    #+#             */
+/*   Updated: 2018/02/23 15:42:11 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@ static int		ft_check_spec_case(char *s, char *f, t_arg arg)
 	return (z);
 }
 
-static t_arg	ft_check_flags_on_format(char **s, va_list ap)
+static t_arg	ft_check_flags_on_format(char **s, va_list ap, int fd)
 {
 	t_arg arg;
 
 	arg = ft_printf_new_arg(&arg);
 	s[0]++;
+	arg.fd = fd;
 	while (**s)
 	{
 		if (ft_strchr(g_conv, **s) || ft_isdigit(**s))
@@ -48,57 +49,57 @@ static t_arg	ft_check_flags_on_format(char **s, va_list ap)
 	return (arg);
 }
 
-static char		*ft_printf_flags(va_list ap, char *s, int *cnt, char *f)
+static int		ft_printf_flags(va_list ap, char **s, char *f, int fd)
 {
 	t_arg	arg;
 	int		z;
 
-	arg = ft_check_flags_on_format(&s, ap);
-	if (*s == 'i' || *s == 'd' || *s == 'D')
-		z = conv_int(ap, &arg, *s, f);
-	else if (*s == 'u' || *s == 'U' || *s == 'x' ||
-			*s == 'X' || *s == 'o' || *s == 'O' || *s == 'b')
-		z = conv_unsigned_int(ap, &arg, *s, f);
-	else if (*s == 'p')
-		z = conv_void(ap, &arg, *s, f);
-	else if (*s == 'c' && arg.lenght != 'l')
+	arg = ft_check_flags_on_format(s, ap, fd);
+	if (*s[0] == 'i' || *s[0] == 'd' || *s[0] == 'D')
+		z = conv_int(ap, &arg, *s[0], f);
+	else if (*s[0] == 'u' || *s[0] == 'U' || *s[0] == 'x' ||
+			*s[0] == 'X' || *s[0] == 'o' || *s[0] == 'O' || *s[0] == 'b')
+		z = conv_unsigned_int(ap, &arg, *s[0], f);
+	else if (*s[0] == 'p')
+		z = conv_void(ap, &arg, *s[0], f);
+	else if (*s[0] == 'c' && arg.lenght != 'l')
 		z = conv_char(ap, &arg, f);
-	else if (*s == 'C' || (*s == 'c' && arg.lenght == 'l'))
+	else if (*s[0] == 'C' || (*s[0] == 'c' && arg.lenght == 'l'))
 		z = conv_utf_8(ap, &arg, f);
-	else if (*s == 's' && arg.lenght != 'l')
+	else if (*s[0] == 's' && arg.lenght != 'l')
 		z = conv_str(ap, &arg, f);
-	else if (*s == 'S' || (*s == 's' && arg.lenght == 'l'))
+	else if (*s[0] == 'S' || (*s[0] == 's' && arg.lenght == 'l'))
 		z = conv_str_utf_8(ap, &arg, f);
 	else
-		z = ft_check_spec_case(s, f, arg);
+		z = ft_check_spec_case(*s, f, arg);
 	if (z == -1)
-		return (NULL);
-	*cnt += z;
-	return (s + 1);
+		return (-1);
+	*s += 1;
+	return (z);
 }
 
-int				ft_printf(const char *restrict format, ...)
+int				ft_dprintf(int fd, const char *restrict format, ...)
 {
 	char	*tmp;
 	char	*f;
 	va_list	ap;
 	int		cnt;
+	int		i;
 
 	cnt = 0;
 	f = NULL;
 	tmp = (char *)format;
 	va_start(ap, format);
-	while (*tmp)
+	while (*tmp && (tmp = ft_pf_copy_until(tmp, &cnt, &f)) != NULL)
 	{
-		if ((tmp = ft_pf_copy_until(tmp, &cnt, &f)) == NULL)
-			break ;
 		if (*tmp == '%')
 		{
-			if ((tmp = ft_printf_flags(ap, tmp, &cnt, f)) == NULL)
+			if ((i = ft_printf_flags(ap, &tmp, f, fd)) == -1)
 				return (-1);
+			cnt += i;
 		}
 		else
-			ft_putstr(f);
+			ft_putstr_fd(f, fd);
 		ft_strdel(&f);
 	}
 	va_end(ap);

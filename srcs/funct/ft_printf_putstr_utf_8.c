@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 10:21:48 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/17 19:17:21 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/21 13:30:54 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ int			ft_printf_putstr_utf_8(char *c, t_arg *arg)
 		cnt = ft_non_justify(c, arg);
 	else
 		cnt = ft_left_justify(c, arg);
-//	ft_strdel(&c);
+	ft_strdel(&c);
 	return (cnt);
 }

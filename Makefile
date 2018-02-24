@@ -6,7 +6,7 @@
 #    By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/14 22:43:59 by jpinyot           #+#    #+#              #
-#    Updated: 2018/02/16 18:17:05 by jpinyot          ###   ########.fr        #
+#    Updated: 2018/02/22 19:08:10 by jpinyot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ CONV_DIR = srcs/conversions/
 FUNC_DIR = srcs/funct/
 
 SRC = ft_printf.c\
+	  ft_fd_printf.c\
 	  ft_printf_check_flags.c
 
 CONV = conv_int.c\
@@ -45,7 +46,19 @@ FUNC = ft_printf_new_arg.c\
 	  ft_printf_from_int_to_utf_8.c\
 	  ft_printf_funct.c
 
-LIB_SRC = ./libft/*.o
+LIB_SRC = ./libft/ft_strlen.o\
+		  ./libft/ft_isdigit.o\
+		  ./libft/ft_putstr_fd.o\
+		  ./libft/ft_strchr.o\
+		  ./libft/ft_strchr.o\
+		  ./libft/ft_strcpy.o\
+		  ./libft/ft_strdel.o\
+		  ./libft/ft_strdup.o\
+		  ./libft/ft_strjoin.o\
+		  ./libft/ft_strncpy.o\
+		  ./libft/ft_strnew.o\
+		  ./libft/ft_bzero.o\
+		  ./libft/ft_putstr.o\
 
 OBJ_SRC = $(patsubst %.c, $(SRC_DIR)%.o, $(SRC))
 

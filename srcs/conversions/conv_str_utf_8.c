@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 09:42:01 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/20 16:41:42 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/21 16:16:56 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,45 +65,49 @@ static int		ft_check_correct_arg(int *s)
 	return (0);
 }
 
-int				conv_str_utf_8(va_list ap, t_arg *arg, char *f)
+static char		*ft_from_int_to_utf(int *s, t_arg *arg)
 {
-	int		*s;
 	char	*a;
-	char	*x;
 	int		i;
-	int		j;
+	char	*x;
+	char	*r;
 
 	i = 0;
-	j = 0;
-	s = va_arg(ap, int *);
-	ft_putstr_fd(f, arg->fd);
-	if (ft_check_correct_arg(s) == -1)
-		return (-1);
-	if (s == NULL)
-		return (ft_printf_putstr("(null)", arg));
-	if (arg->p_switch == 0)
-		arg->precision = ft_nbrlen(s);
 	if (s && ft_check_n(*s) <= arg->precision)
 	{
 		a = ft_printf_from_int_to_utf_8(*s, arg);
 		s++;
 	}
 	else
-//	if (arg->p_switch && arg->precision == 0)
-		return (ft_printf_putstr("", arg));
+		return (NULL);
 	while (s[i])
 	{
 		x = a;
-		if ((j = ft_strlen(a)) + ft_check_n(s[i]) <= arg->precision)
-		{
-			a = ft_strjoin(a, ft_printf_from_int_to_utf_8(s[i], arg));
-			ft_strdel(&x);
-		}
-		else
-			break;
+		if ((ft_strlen(a)) + ft_check_n(s[i]) > (unsigned long)arg->precision)
+			break ;
+		r = ft_printf_from_int_to_utf_8(s[i], arg);
+		a = ft_strjoin(x, r);
+		ft_strdel(&x);
+		ft_strdel(&r);
 		i++;
 	}
-//	if (arg->p_switch && arg->precision > 0)
-//		arg->filed_width -= ft_strlen(a);
-	return(ft_printf_putstr_utf_8(a, arg));
+	return (a);
+}
+
+int				conv_str_utf_8(va_list ap, t_arg *arg, char *f)
+{
+	int		*s;
+	char	*a;
+
+	s = va_arg(ap, int *);
+	if (s != NULL && ft_check_correct_arg(s) == -1)
+		return (-1);
+	ft_putstr_fd(f, arg->fd);
+	if (s == NULL)
+		return (ft_printf_putstr("(null)", arg));
+	if (arg->p_switch == 0)
+		arg->precision = ft_nbrlen(s);
+	if ((a = ft_from_int_to_utf(s, arg)) == NULL)
+		return (ft_printf_putstr("", arg));
+	return (ft_printf_putstr_utf_8(a, arg));
 }

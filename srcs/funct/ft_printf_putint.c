@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:31:29 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/16 22:27:24 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/20 16:58:37 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	ft_int_write(char *n, t_arg *arg, int cnt)
 		if (arg->filed_width > 0)
 			cnt += ft_pf_write_until(' ', arg->filed_width, arg->fd);
 	}
-	if(*n)
+	if (*n)
 		ft_strdel(&n);
 	return (cnt);
 }
@@ -48,7 +48,7 @@ int			ft_printf_putint(intmax_t num, t_arg *arg)
 	int		cnt;
 
 	cnt = 0;
-	if  (num == 0 && arg->p_switch && arg->precision == 0)
+	if (num == 0 && arg->p_switch && arg->precision == 0)
 		return (ft_int_write("", arg, cnt));
 	n = ft_printf_itoa(num);
 	len = ft_strlen(n);

@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 14:29:15 by jpinyot           #+#    #+#             */
-/*   Updated: 2018/02/16 15:45:29 by jpinyot          ###   ########.fr       */
+/*   Updated: 2018/02/21 15:31:19 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ int			ft_printf_pututf_8(char *c, t_arg *arg)
 	{
 		if (arg->filed_width > 0)
 			cnt += ft_pf_write_until(' ', arg->filed_width, arg->fd);
-		cnt += ft_pf_putstr(c, arg->fd);
+		cnt += write(arg->fd, c, ft_strlen(c));
 	}
 	else
 	{
-		cnt += ft_pf_putstr(c, arg->fd);
+		cnt += write(arg->fd, c, ft_strlen(c));
 		if (arg->filed_width > 0)
 			cnt += ft_pf_write_until(' ', arg->filed_width, arg->fd);
 	}
-	free(c);
+	ft_strdel(&c);
 	return (cnt);
 }
